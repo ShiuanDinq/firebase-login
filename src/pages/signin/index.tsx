@@ -1,15 +1,24 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { auth } from "../../firebase";
+import { useRouter } from "next/router";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [errorResponse, setErrorResponse] = useState("");
   const [notification, setNotification] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setEmail(window.localStorage.getItem("email") || "");
   }, []);
+
+  useEffect(() => {
+    if (loggedIn == true) {
+      router.push("/success");
+    }
+  }, [loggedIn]);
 
   useEffect(() => {
     const saved_email = window.localStorage.getItem("email");
@@ -48,10 +57,12 @@ const SignIn = () => {
             setErrorResponse("An unknown error has occured");
         }
       });
+      console.log("---setting log in-----");
+      setLoggedIn(true);
     } else {
       auth
         .sendSignInLinkToEmail(email, {
-          url: "http://localhost:3000/success",
+          url: "http://localhost:3000/signin",
           handleCodeInApp: true,
         })
         .then(() => {
@@ -92,6 +103,7 @@ const SignIn = () => {
             Sign in
           </button>
           <div className="error_response">{errorResponse}</div>
+          <div className="notification">{notification}</div>
         </div>
       </main>
     </>

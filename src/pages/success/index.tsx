@@ -12,8 +12,10 @@ export default function UserInfo() {
   useEffect(() => {
     auth.onAuthStateChanged(function (user) {
       if (user) {
+        console.log("----user-----", user);
         setLoggedIn(true);
       } else {
+        console.log("-----not logged it----");
         setLoggedIn(false);
       }
     });

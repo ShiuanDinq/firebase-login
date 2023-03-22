@@ -4,15 +4,23 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebase";
 import { useState } from "react";
 import Link from "next/link";
+import SignInModal from "@/components/SignInModal";
 
 export default function Home() {
   const [login, setLogin] = useState(false);
+  const [currentUser, setCurrentUser] = useState<string | null>("");
+
+  const handleLogout = () => {
+    auth.signOut();
+  };
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const uid = user.uid;
-      console.log("-----user-----", user.displayName);
+      console.log("-----user-----", user);
+      setCurrentUser(user.displayName);
       setLogin(true);
-      //   setUserName(user.displayName);
+
       // ...
     } else {
       console.log("--- not signed in----");
@@ -25,15 +33,17 @@ export default function Home() {
   const LoginButton = !login ? (
     <div className="flex-container">
       <h1>You are not currently signed in</h1>
-      <Link href="/signin">
-        <button>Sign in here</button>
-      </Link>
+      <SignInModal />
     </div>
   ) : (
     <div className="flex-container">
-      You are signed in! Check out your <Link href="/user">user page</Link>
+      <h1>Hi,{currentUser}. You are signed in!</h1>
+      <Link href="/">
+        <button onClick={handleLogout}>Log out</button>
+      </Link>
     </div>
   );
+
   return (
     <>
       <Head>

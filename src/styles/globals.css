@@ -16,6 +16,10 @@
   margin: 0 10vw;
 }
 
+.ant-modal-title {
+  font-size: 100px;
+}
+
 .error_response {
   color: crimson;
 }

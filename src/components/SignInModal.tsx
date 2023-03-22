@@ -36,7 +36,12 @@ const SignInModal: React.FC = () => {
     const { email, password } = values;
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        setIsModalOpen(false);
+        const user = userCredential.user;
+        if (!user.emailVerified) {
+          handleError("Email not verified");
+        } else {
+          setIsModalOpen(false);
+        }
       })
       .catch((err) => {
         switch (err.code) {

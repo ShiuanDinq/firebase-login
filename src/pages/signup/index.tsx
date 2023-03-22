@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 
 const SignUp = () => {
   const [errorResponse, setErrorResponse] = useState("");
+  const [notification, setNotificaiton] = useState("");
   const router = useRouter();
 
   const handleError = (error: string) => {
@@ -46,7 +47,7 @@ const SignUp = () => {
         });
         // firebase auth doesn't check for verification status
         sendEmailVerification(userCredential.user);
-        router.push("/");
+        setNotificaiton("Verification email has been sent");
       })
       .catch((err) => {
         switch (err.code) {
@@ -129,6 +130,7 @@ const SignUp = () => {
             </Form.Item>
           </Form>
           <div className="error_response">{errorResponse}</div>
+          <div className="notification">{notification}</div>
         </div>
       </main>
     </>

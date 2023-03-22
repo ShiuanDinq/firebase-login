@@ -15,7 +15,7 @@ export default function Home() {
   };
 
   onAuthStateChanged(auth, (user) => {
-    if (user) {
+    if (user && user.emailVerified) {
       const uid = user.uid;
       console.log("-----user-----", user);
       setCurrentUser(user.displayName);
